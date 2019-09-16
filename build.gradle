@@ -24,6 +24,7 @@ ext {
     guavaVersion = '28.0-jre'
     jwtVersion = '3.8.1'
     sbeToolVersion = '1.13.2'
+    aeronVersion = '1.21.2'
 }
 
 def allJavaApplications = [':reservation:gateway:gateway-core', ':reservation:cluster:cluster-core']

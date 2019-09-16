@@ -1,1 +1,5 @@
-mainClassName = 'Cluster'
+mainClassName = 'ClusterLauncher'
+
+dependencies {
+    implementation "io.aeron:aeron-cluster:$aeronVersion"
+}
