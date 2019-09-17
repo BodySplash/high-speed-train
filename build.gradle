@@ -14,12 +14,9 @@ allprojects {
 ext {
     junitVersion = '5.4.2'
     vavrVersion = '0.10.0'
-    guiceVersion = '4.2.2'
     restEasyVersion = '4.0.0.Final'
     agronaVersion = '1.0.7'
     eclipseCollectionVersion = '10.0.0'
-    resilience4jVersion = '0.16.0'
-    cloudStorageVersion = '1.79.0'
     guavaVersion = '28.0-jre'
     sbeToolVersion = '1.13.2'
     aeronVersion = '1.21.2'
@@ -53,11 +50,7 @@ allJavaProjects.forEach {
         }
 
         dependencies {
-            implementation "com.google.inject.extensions:guice-multibindings:$guiceVersion"
-            implementation "com.google.inject:guice:$guiceVersion:no_aop"
-            implementation 'org.cfg4j:cfg4j-core:4.4.1'
             implementation 'ch.qos.logback:logback-classic:1.2.3'
-
             testImplementation 'org.mockito:mockito-core:2.28.2'
             testImplementation 'org.mockito:mockito-junit-jupiter:2.28.2'
             testImplementation 'org.assertj:assertj-core:3.12.2'
@@ -67,7 +60,7 @@ allJavaProjects.forEach {
 
         test {
             useJUnitPlatform()
-            failFast = true
+            failFast = false
 
             testLogging {
                 events "PASSED", "FAILED", "SKIPPED"

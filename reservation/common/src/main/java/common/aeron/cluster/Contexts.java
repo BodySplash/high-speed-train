@@ -1,6 +1,6 @@
 package common.aeron.cluster;
 
-import io.aeron.archive.Archive;
+import io.aeron.archive.*;
 import io.aeron.cluster.ConsensusModule;
 import io.aeron.cluster.service.ClusteredServiceContainer;
 import io.aeron.driver.*;
@@ -11,21 +11,22 @@ import java.util.function.Supplier;
 
 public class Contexts {
 
-    public static Contexts build(ClusterNodeConfiguration configuration) {
+    public static Contexts build(ClusterNode.Configuration configuration) {
         String aeronDirectoryName = String.join(File.separator, configuration.rootDirectory(), "driver");
         String archiveDirectoryName = String.join(File.separator, configuration.rootDirectory(), "archive");
         String clusterDirectoryName = String.join(File.separator, configuration.rootDirectory(), "cluster");
         var idleStrategySupplier = supplierFor(configuration);
         var driverCtx = new MediaDriver.Context()
                 .aeronDirectoryName(aeronDirectoryName)
-                .threadingMode(ThreadingMode.SHARED)
+                .threadingMode(driverThreadingMode(configuration))
                 .conductorIdleStrategy(idleStrategySupplier.get())
                 .receiverIdleStrategy(idleStrategySupplier.get())
                 .senderIdleStrategy(idleStrategySupplier.get());
         var archiveCtx = new Archive.Context()
                 .aeronDirectoryName(aeronDirectoryName)
                 .archiveDirectoryName(archiveDirectoryName)
-                .idleStrategySupplier(idleStrategySupplier);
+                .idleStrategySupplier(idleStrategySupplier)
+                .threadingMode(archiveThreadingMode(configuration));
         var consensusModuleCtx = new ConsensusModule.Context().aeronDirectoryName(aeronDirectoryName)
                 .appointedLeaderId(0)
                 .aeronDirectoryName(aeronDirectoryName)
@@ -40,11 +41,33 @@ public class Contexts {
 
     }
 
-    private static Supplier<IdleStrategy> supplierFor(ClusterNodeConfiguration configuration) {
-        switch (configuration.mode()) {
+    private static ArchiveThreadingMode archiveThreadingMode(ClusterNode.Configuration configuration) {
+        switch (configuration.profile()) {
+
+            case PERF:
+                return ArchiveThreadingMode.DEDICATED;
+            case SLOW:
+            default:
+                return ArchiveThreadingMode.SHARED;
+        }
+    }
+
+    private static ThreadingMode driverThreadingMode(ClusterNode.Configuration configuration) {
+        switch (configuration.profile()) {
+
+            case PERF:
+                return ThreadingMode.DEDICATED;
+            case SLOW:
+            default:
+                return ThreadingMode.SHARED;
+        }
+    }
+
+    private static Supplier<IdleStrategy> supplierFor(ClusterNode.Configuration configuration) {
+        switch (configuration.profile()) {
             case PERF:
                 return () -> new BusySpinIdleStrategy();
-            case LOCAL:
+            case SLOW:
             default:
                 return () -> new SleepingMillisIdleStrategy(10);
         }
