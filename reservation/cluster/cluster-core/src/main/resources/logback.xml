@@ -1,0 +1,13 @@
+<configuration debug="false">
+    <property resource="logback.properties"/>
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%cyan(%thread)][%highlight(%-5level)][%boldGreen(%logger{5})] %m%n
+            </pattern>
+        </encoder>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
