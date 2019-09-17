@@ -1,6 +1,6 @@
 rootProject.name='high-speed-train'
 
+include 'reservation:common'
 include 'reservation:cluster:cluster-api'
 include 'reservation:cluster:cluster-core'
-include 'reservation:gateway:gateway-api'
-include 'reservation:gateway:gateway-core'
+include 'reservation:client'

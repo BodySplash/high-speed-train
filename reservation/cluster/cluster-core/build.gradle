@@ -1,5 +1,5 @@
-mainClassName = 'ClusterLauncher'
+mainClassName = 'ReservationCluster'
 
 dependencies {
-    implementation "io.aeron:aeron-cluster:$aeronVersion"
+    implementation project(':reservation:common')
 }

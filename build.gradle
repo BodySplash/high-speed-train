@@ -16,20 +16,18 @@ ext {
     vavrVersion = '0.10.0'
     guiceVersion = '4.2.2'
     restEasyVersion = '4.0.0.Final'
-    agronaVersion = '1.0.2'
-    undertowVersion = '2.0.22.Final'
+    agronaVersion = '1.0.7'
     eclipseCollectionVersion = '10.0.0'
     resilience4jVersion = '0.16.0'
     cloudStorageVersion = '1.79.0'
     guavaVersion = '28.0-jre'
-    jwtVersion = '3.8.1'
     sbeToolVersion = '1.13.2'
     aeronVersion = '1.21.2'
 }
 
-def allJavaApplications = [':reservation:gateway:gateway-core', ':reservation:cluster:cluster-core']
+def allJavaApplications = [':reservation:cluster:cluster-core', 'reservation:client']
 
-def allJavaLibrary = [':reservation:gateway:gateway-api', ':reservation:cluster:cluster-api']
+def allJavaLibrary = [':reservation:cluster:cluster-api', ':reservation:common']
 
 def allJavaProjects = allJavaApplications + allJavaLibrary
 
@@ -43,7 +41,7 @@ allJavaApplications.forEach {
     project(it) {
         apply plugin: 'application'
 
-        
+        applicationDefaultJvmArgs = ["-server", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED"]
     }
 }
 
@@ -54,7 +52,7 @@ allJavaProjects.forEach {
             targetCompatibility = 11
         }
 
-         dependencies {
+        dependencies {
             implementation "com.google.inject.extensions:guice-multibindings:$guiceVersion"
             implementation "com.google.inject:guice:$guiceVersion:no_aop"
             implementation 'org.cfg4j:cfg4j-core:4.4.1'
