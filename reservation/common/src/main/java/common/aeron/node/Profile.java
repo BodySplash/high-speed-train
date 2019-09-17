@@ -1,4 +1,4 @@
-package common.aeron.cluster;
+package common.aeron.node;
 
 public enum Profile {
     SLOW, PERF

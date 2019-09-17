@@ -1,0 +1,5 @@
+mainClassName = 'ReservationClient'
+
+dependencies {
+    implementation project(':reservation:common')
+}

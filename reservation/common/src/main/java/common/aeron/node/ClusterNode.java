@@ -1,4 +1,4 @@
-package common.aeron.cluster;
+package common.aeron.node;
 
 import io.aeron.archive.ArchivingMediaDriver;
 import io.aeron.cluster.ConsensusModule;

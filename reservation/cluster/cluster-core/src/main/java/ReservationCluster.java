@@ -1,4 +1,4 @@
-import common.aeron.cluster.*;
+import common.aeron.node.*;
 import reservation.cluster.ReservationService;
 
 public class ReservationCluster {

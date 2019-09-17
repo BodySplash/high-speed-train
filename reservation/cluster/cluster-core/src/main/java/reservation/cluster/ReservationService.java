@@ -16,12 +16,12 @@ public class ReservationService implements ClusteredService {
 
     @Override
     public void onSessionOpen(ClientSession session, long timestamp) {
-
+        LOGGER.info("new session {}", session.id());
     }
 
     @Override
     public void onSessionClose(ClientSession session, long timestamp, CloseReason closeReason) {
-
+        LOGGER.info("session closed {}", session.id());
     }
 
     @Override
