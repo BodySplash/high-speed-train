@@ -1,0 +1,33 @@
+configurations{
+    codecGeneration
+}
+
+dependencies {
+    codecGeneration "uk.co.real-logic:sbe-tool:$sbeToolVersion"
+    api "org.agrona:agrona:$agronaVersion"
+}
+
+compileJava.dependsOn 'generateCodecs'
+
+
+def generatedDir = file("${buildDir}/generated-src")
+
+sourceSets {
+    main.java.srcDirs+= generatedDir
+}
+
+task generateCodecs(type: JavaExec) {
+    main = 'uk.co.real_logic.sbe.SbeTool'
+    workingDir = 'src/main/sbe'
+    def validationXsdPath = "${workingDir}/sbe.xsd"
+    classpath = configurations.codecGeneration
+    systemProperties(
+            'sbe.output.dir': generatedDir,
+            'sbe.target.language': 'Java',
+            'sbe.xinclude.aware': 'true',
+            'sbe.validation.stop.on.error': 'true',
+            'sbe.validation.xsd': validationXsdPath,
+            'sbe.java.encoding.buffer.type': 'org.agrona.MutableDirectBuffer',
+            'sbe.java.decoding.buffer.type': 'org.agrona.DirectBuffer')
+    args = ['codec.xml']
+}
