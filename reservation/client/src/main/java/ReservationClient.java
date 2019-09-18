@@ -3,19 +3,31 @@ import io.aeron.cluster.client.EgressListener;
 import io.aeron.cluster.codecs.EventCode;
 import io.aeron.logbuffer.Header;
 import org.agrona.*;
-import org.agrona.concurrent.*;
 import org.slf4j.*;
+import reservation.client.ReservationClusterProxy;
+
+import java.util.Scanner;
 
 public class ReservationClient {
+
     public static void main(String[] args) {
-        var barrier = new ShutdownSignalBarrier();
         try (var client = ClusterClient.launch(ClusterClient.configuration()
                 .rootDirectory("./data")
                 .egressListener(new MyListener()))) {
-            var buffer = new ExpandableDirectByteBuffer(128);
-            buffer.putLong(0, 8);
-            client.offer(buffer, 0, BitUtil.SIZE_OF_LONG);
-            barrier.await();
+            var proxy = new ReservationClusterProxy(client);
+            var scanner = new Scanner(System.in);
+            while (true) {
+                System.out.print('>');
+                var command = scanner.nextLine();
+                if("exit".equals(command)) {
+                    break;
+                }
+                if(command.startsWith("ct")) {
+                    var params = command.split(" ");
+                    proxy.createTrain(Integer.parseInt(params[1]), Integer.parseInt(params[2]), Integer.parseInt(params[3]));
+                }
+            }
+
         }
     }
 

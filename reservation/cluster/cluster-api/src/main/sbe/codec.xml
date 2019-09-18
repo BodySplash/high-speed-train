@@ -30,6 +30,8 @@
     </types>
 
     <sbe:message id="1" name="CreateTrain">
-
+        <field id="1" name="trainId" type="uint16"/>
+        <field id="2" name="coachesNumber" type="uint16"/>
+        <field id="3" name="seatsNumber" type="uint16"/>
     </sbe:message>
 </sbe:messageSchema>

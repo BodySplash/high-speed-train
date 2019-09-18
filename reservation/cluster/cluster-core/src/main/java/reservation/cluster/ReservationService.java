@@ -5,6 +5,7 @@ import io.aeron.cluster.codecs.CloseReason;
 import io.aeron.cluster.service.*;
 import io.aeron.logbuffer.Header;
 import org.agrona.DirectBuffer;
+import org.agrona.concurrent.UnsafeBuffer;
 import org.slf4j.*;
 
 public class ReservationService implements ClusteredService {
@@ -27,6 +28,8 @@ public class ReservationService implements ClusteredService {
     @Override
     public void onSessionMessage(ClientSession session, long timestamp, DirectBuffer buffer, int offset, int length, Header header) {
         LOGGER.info("Session message {}", session.id());
+        this.buffer.wrap(buffer, offset, length);
+        messageAdapter.adapt(this.buffer);
     }
 
     @Override
@@ -50,4 +53,6 @@ public class ReservationService implements ClusteredService {
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReservationService.class);
+    private MessageAdapter messageAdapter = new MessageAdapter();
+    private UnsafeBuffer buffer = new UnsafeBuffer();
 }
