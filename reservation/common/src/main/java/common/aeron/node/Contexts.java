@@ -13,9 +13,9 @@ import java.util.function.Supplier;
 
 import static io.aeron.CommonContext.*;
 
-public class Contexts {
+class Contexts {
 
-    public static Contexts build(ClusterNode.Configuration configuration) {
+    static Contexts build(ClusterNode.Configuration configuration) {
         String aeronDirectoryName = String.join(File.separator, configuration.rootDirectory(), "driver");
         String archiveDirectoryName = String.join(File.separator, configuration.rootDirectory(), "archive");
         String clusterDirectoryName = String.join(File.separator, configuration.rootDirectory(), "cluster");
@@ -59,7 +59,7 @@ public class Contexts {
                 .aeronDirectoryName(aeronDirectoryName)
                 .clusterDirectoryName(clusterDirectoryName)
                 .idleStrategySupplier(idleStrategySupplier)
-                .clusterMemberId(0);
+                .clusterMemberId(configuration.memberId());
         var serviceCtx = new ClusteredServiceContainer.Context()
                 .aeronDirectoryName(aeronDirectoryName)
                 .clusterDirectoryName(clusterDirectoryName)
@@ -92,22 +92,22 @@ public class Contexts {
     private static Supplier<IdleStrategy> supplierFor(ClusterNode.Configuration configuration) {
         switch (configuration.profile()) {
             case PERF:
-                return () -> new BusySpinIdleStrategy();
+                return BusySpinIdleStrategy::new;
             case SLOW:
             default:
                 return () -> new SleepingMillisIdleStrategy(10);
         }
     }
 
-    public Contexts(MediaDriver.Context driverCtx, Archive.Context archiveCtx, ConsensusModule.Context consensusModuleCtx, ClusteredServiceContainer.Context serviceCtx) {
+    private Contexts(MediaDriver.Context driverCtx, Archive.Context archiveCtx, ConsensusModule.Context consensusModuleCtx, ClusteredServiceContainer.Context serviceCtx) {
         this.driverCtx = driverCtx;
         this.archiveCtx = archiveCtx;
         this.consensusModuleCtx = consensusModuleCtx;
         this.serviceCtx = serviceCtx;
     }
 
-    public final MediaDriver.Context driverCtx;
-    public final Archive.Context archiveCtx;
-    public final ConsensusModule.Context consensusModuleCtx;
-    public final ClusteredServiceContainer.Context serviceCtx;
+    final MediaDriver.Context driverCtx;
+    final Archive.Context archiveCtx;
+    final ConsensusModule.Context consensusModuleCtx;
+    final ClusteredServiceContainer.Context serviceCtx;
 }

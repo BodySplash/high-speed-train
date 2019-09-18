@@ -25,7 +25,7 @@ public class ClusterNode implements AutoCloseable {
         LOGGER.info("Running");
     }
 
-    public ClusterNode(Contexts contexts) {
+    private ClusterNode(Contexts contexts) {
         this.contexts = contexts;
     }
 
@@ -53,12 +53,15 @@ public class ClusterNode implements AutoCloseable {
         private ClusteredService service;
         private int memberId = 0;
 
+        private Configuration() {
+        }
+
         public Configuration profile(Profile profile) {
             this.profile = profile;
             return this;
         }
 
-        public Profile profile() {
+        Profile profile() {
             return profile;
         }
 
@@ -67,7 +70,7 @@ public class ClusterNode implements AutoCloseable {
             return this;
         }
 
-        public String rootDirectory() {
+        String rootDirectory() {
             return rootDirectory;
         }
 
@@ -76,7 +79,7 @@ public class ClusterNode implements AutoCloseable {
             return this;
         }
 
-        public ClusteredService service() {
+        ClusteredService service() {
             return service;
         }
 
@@ -85,7 +88,7 @@ public class ClusterNode implements AutoCloseable {
             return this;
         }
 
-        public int memberId() {
+        int memberId() {
             return memberId;
         }
     }

@@ -26,7 +26,7 @@ public class ReservationService implements ClusteredService {
 
     @Override
     public void onSessionMessage(ClientSession session, long timestamp, DirectBuffer buffer, int offset, int length, Header header) {
-
+        LOGGER.info("Session message {}", session.id());
     }
 
     @Override
@@ -49,5 +49,5 @@ public class ReservationService implements ClusteredService {
         LOGGER.info("Shutting down");
     }
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(ReservationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReservationService.class);
 }
