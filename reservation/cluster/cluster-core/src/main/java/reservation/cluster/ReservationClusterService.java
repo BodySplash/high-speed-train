@@ -7,8 +7,10 @@ import io.aeron.logbuffer.Header;
 import org.agrona.DirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
 import org.slf4j.*;
+import reservation.cluster.domain.TicketOffice;
+import reservation.cluster.infra.MemoryTrainRepository;
 
-public class ReservationService implements ClusteredService {
+public class ReservationClusterService implements ClusteredService {
 
     @Override
     public void onStart(Cluster cluster, Image snapshotImage) {
@@ -52,7 +54,7 @@ public class ReservationService implements ClusteredService {
         LOGGER.info("Shutting down");
     }
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReservationService.class);
-    private MessageAdapter messageAdapter = new MessageAdapter();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReservationClusterService.class);
+    private MessageAdapter messageAdapter = new MessageAdapter(new TicketOffice(new MemoryTrainRepository()));
     private UnsafeBuffer buffer = new UnsafeBuffer();
 }

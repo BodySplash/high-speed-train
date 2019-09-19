@@ -27,7 +27,14 @@ public class Train {
     }
 
     public ReservationOption findReservation(int seatsCount) {
-        return ReservationOption.create();
+        var result = ReservationOption.create(seatsCount);
+        for (Coach coach : coaches) {
+            coach.tryFill(result);
+            if(result.isFullFilled()) {
+                return result;
+            }
+        }
+        return result;
     }
 
     private int id;

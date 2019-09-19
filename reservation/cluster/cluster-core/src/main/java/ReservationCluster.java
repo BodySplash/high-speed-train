@@ -1,5 +1,5 @@
 import common.aeron.node.*;
-import reservation.cluster.ReservationService;
+import reservation.cluster.ReservationClusterService;
 
 public class ReservationCluster {
 
@@ -8,7 +8,7 @@ public class ReservationCluster {
                 .profile(Profile.SLOW)
                 .memberId(0)
                 .rootDirectory("./data")
-                .service(new ReservationService()))) {
+                .service(new ReservationClusterService()))) {
             launch.awaitShutDown();
         }
     }

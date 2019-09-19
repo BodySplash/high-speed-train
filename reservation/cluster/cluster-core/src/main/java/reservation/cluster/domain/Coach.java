@@ -19,7 +19,17 @@ public class Coach {
         return seatsNumber;
     }
 
+    public void tryFill(ReservationOption result) {
+        if (result.getExpectedSeats() > (seatsNumber - reservationCount) * 0.7) {
+            return;
+        }
+        while (!result.isFullFilled()) {
+            result.bookSeat(id, ++reservationCount);
+        }
+    }
+
 
     private final char id;
     private final int seatsNumber;
+    private int reservationCount;
 }
