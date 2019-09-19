@@ -4,7 +4,13 @@ import org.agrona.*;
 import org.agrona.sbe.EncoderFlyweight;
 import reservation.cluster.api.*;
 
+import java.util.function.LongSupplier;
+
 public class MessageMarshaller implements EncoderFlyweight {
+
+    public MessageMarshaller(LongSupplier correlationId) {
+        this.correlationId = correlationId;
+    }
 
     @Override
     public MutableDirectBuffer buffer() {
@@ -38,14 +44,14 @@ public class MessageMarshaller implements EncoderFlyweight {
 
     public void createTrain(int id, int coaches, int seats) {
         createTrainEncoder.wrapAndApplyHeader(buffer, 0, headerEncoder)
+                .correlationId(correlationId.getAsLong())
                 .trainId(id)
                 .coachesNumber(coaches)
                 .seatsNumber(seats);
         messageLength = createTrainEncoder.encodedLength();
     }
 
-
-
+    private final LongSupplier correlationId;
     private ExpandableDirectByteBuffer buffer = new ExpandableDirectByteBuffer(128);
     private MessageHeaderEncoder headerEncoder = new MessageHeaderEncoder();
     private CreateTrainEncoder createTrainEncoder = new CreateTrainEncoder();

@@ -2,7 +2,7 @@ import common.aeron.client.ClusterClient;
 import io.aeron.cluster.client.EgressListener;
 import io.aeron.cluster.codecs.EventCode;
 import io.aeron.logbuffer.Header;
-import org.agrona.*;
+import org.agrona.DirectBuffer;
 import org.slf4j.*;
 import reservation.client.ReservationClusterProxy;
 
@@ -19,10 +19,10 @@ public class ReservationClient {
             while (true) {
                 System.out.print('>');
                 var command = scanner.nextLine();
-                if("exit".equals(command)) {
+                if ("exit".equals(command)) {
                     break;
                 }
-                if(command.startsWith("ct")) {
+                if (command.startsWith("ct")) {
                     var params = command.split(" ");
                     proxy.createTrain(Integer.parseInt(params[1]), Integer.parseInt(params[2]), Integer.parseInt(params[3]));
                 }

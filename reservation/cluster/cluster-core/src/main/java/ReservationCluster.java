@@ -11,7 +11,5 @@ public class ReservationCluster {
                 .service(new ReservationService()))) {
             launch.awaitShutDown();
         }
-
     }
-
 }

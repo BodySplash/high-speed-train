@@ -29,7 +29,7 @@ public class ReservationService implements ClusteredService {
     public void onSessionMessage(ClientSession session, long timestamp, DirectBuffer buffer, int offset, int length, Header header) {
         LOGGER.info("Session message {}", session.id());
         this.buffer.wrap(buffer, offset, length);
-        messageAdapter.adapt(this.buffer);
+        messageAdapter.adapt(session, this.buffer);
     }
 
     @Override

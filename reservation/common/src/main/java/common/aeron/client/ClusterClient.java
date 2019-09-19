@@ -36,6 +36,10 @@ public class ClusterClient implements AutoCloseable {
         return cluster.offer(buffer, offset, length);
     }
 
+    public long nextCorrelationId() {
+        return cluster.context().aeron().nextCorrelationId();
+    }
+
     @Override
     public void close() {
         CloseHelper.close(agentRunner);
