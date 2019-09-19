@@ -1,32 +1,37 @@
 package reservation.cluster.domain;
 
+
+import common.Chars;
+
+import java.util.*;
+
 public class Train {
 
     public static Factory withCoaches(int number) {
         return new Factory(number);
     }
 
-    private Train(int id, int coaches, int seatsPerCoaches) {
+    private Train(int id, int coachesCount, int seatsPerCoaches) {
         this.id = id;
-        this.coaches = coaches;
-        this.seatsPerCoaches = seatsPerCoaches;
+        for (int i = 1; i <= coachesCount; i++) {
+            this.coaches.add(Coach.create(seatsPerCoaches, Chars.toChar(i)));
+        }
     }
 
     public int getId() {
         return id;
     }
 
-    public int getCoaches() {
+    public List<Coach> getCoaches() {
         return coaches;
     }
 
-    public int getSeatsPerCoaches() {
-        return seatsPerCoaches;
+    public ReservationOption findReservation(int seatsCount) {
+        return ReservationOption.create();
     }
 
     private int id;
-    private int coaches;
-    private int seatsPerCoaches;
+    private List<Coach> coaches = new LinkedList<>();
 
     public static class Factory {
         public Factory(int coaches) {
