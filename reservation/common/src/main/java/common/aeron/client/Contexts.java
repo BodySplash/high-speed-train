@@ -17,7 +17,6 @@ class Contexts {
                 .receiverIdleStrategy(new SleepingMillisIdleStrategy(10))
                 .senderIdleStrategy(new SleepingMillisIdleStrategy(10));
         var clientCtx = new AeronCluster.Context()
-                .egressListener(configuration.egressListener())
                 .isIngressExclusive(false)
                 .aeronDirectoryName(aeronDirectoryName);
         return new Contexts(driverCtx, clientCtx);

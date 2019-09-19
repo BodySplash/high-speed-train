@@ -5,7 +5,7 @@ import org.agrona.concurrent.AtomicBuffer;
 import org.slf4j.LoggerFactory;
 import reservation.cluster.api.*;
 
-public class MessageAdapter {
+class MessageAdapter {
 
     public void adapt(ClientSession session, AtomicBuffer buffer) {
         headerDecoder.wrap(buffer, 0);
@@ -13,7 +13,7 @@ public class MessageAdapter {
             case CreateTrainDecoder.TEMPLATE_ID:
 
                 createTrainDecoder.wrap(buffer, headerDecoder.encodedLength(), headerDecoder.blockLength(), headerDecoder.version());
-                LoggerFactory.getLogger(MessageAdapter.class).info("Create train {} {} {}", createTrainDecoder.trainId(), createTrainDecoder.coachesNumber(), createTrainDecoder.seatsNumber());
+                LoggerFactory.getLogger(MessageAdapter.class).info("Create train {} {} {}", createTrainDecoder.correlationId(), createTrainDecoder.coachesNumber(), createTrainDecoder.seatsNumber());
         }
     }
 

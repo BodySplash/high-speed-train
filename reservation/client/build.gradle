@@ -3,6 +3,7 @@ mainClassName = 'ReservationClient'
 dependencies {
     implementation project(':reservation:common')
     implementation project(':reservation:cluster:cluster-api')
+    implementation 'org.hdrhistogram:HdrHistogram:2.1.11'
 }
 
 run {

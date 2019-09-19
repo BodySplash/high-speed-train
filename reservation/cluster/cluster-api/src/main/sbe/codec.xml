@@ -26,17 +26,21 @@
             <type name="length" primitiveType="uint32" maxValue="1073741824"/>
             <type name="varData" primitiveType="uint8" length="0"/>
         </composite>
+
+        <type name="CoachId" primitiveType="char"/>
+        <type name="CorrelationId" primitiveType="uint64"/>
+        <type name="TrainId" primitiveType="uint16"/>
+
     </types>
 
     <sbe:message id="1" name="CreateTrain">
-        <field id="1" name="correlationId" type="uint64"/>
-        <field id="2" name="trainId" type="uint16"/>
-        <field id="3" name="coachesNumber" type="uint16"/>
-        <field id="4" name="seatsNumber" type="uint16"/>
+        <field id="1" name="correlationId" type="CorrelationId"/>
+        <field id="2" name="coachesNumber" type="uint16"/>
+        <field id="3" name="seatsNumber" type="uint16"/>
     </sbe:message>
 
     <sbe:message id="2" name="CreateTrainResponse">
-        <field id="1" name="correlationId" type="uint64"/>
-        <field id="2" name="trainId" type="uint16"/>
+        <field id="1" name="correlationId" type="CorrelationId"/>
+        <field id="2" name="trainId" type="TrainId"/>
     </sbe:message>
 </sbe:messageSchema>

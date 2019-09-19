@@ -42,13 +42,14 @@ public class MessageMarshaller implements EncoderFlyweight {
         return this;
     }
 
-    public void createTrain(int id, int coaches, int seats) {
+    public long createTrain(int coaches, int seats) {
+        var correlationId = this.correlationId.getAsLong();
         createTrainEncoder.wrapAndApplyHeader(buffer, 0, headerEncoder)
-                .correlationId(correlationId.getAsLong())
-                .trainId(id)
+                .correlationId(correlationId)
                 .coachesNumber(coaches)
                 .seatsNumber(seats);
         messageLength = createTrainEncoder.encodedLength();
+        return correlationId;
     }
 
     private final LongSupplier correlationId;
