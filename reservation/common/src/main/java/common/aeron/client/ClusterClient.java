@@ -9,6 +9,8 @@ import org.agrona.*;
 import org.agrona.concurrent.*;
 import org.slf4j.*;
 
+import java.util.concurrent.TimeUnit;
+
 public class ClusterClient implements AutoCloseable {
 
     public static ClusterClient launch(Configuration configuration) {
@@ -86,7 +88,10 @@ public class ClusterClient implements AutoCloseable {
 
         @Override
         public int doWork() {
-            cluster.sendKeepAlive();
+            if (nextKeepAlive <= System.currentTimeMillis()) {
+                cluster.sendKeepAlive();
+                nextKeepAlive = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(2);
+            }
             return cluster.pollEgress();
         }
 
@@ -94,6 +99,8 @@ public class ClusterClient implements AutoCloseable {
         public String roleName() {
             return "cluster-client-agent";
         }
+
+        public long nextKeepAlive = System.currentTimeMillis();
     }
 
     private class InnerEgressListener implements EgressListener {
