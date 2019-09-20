@@ -1,5 +1,5 @@
 import common.aeron.client.ClusterClient;
-import reservation.client.ReservationClusterProxy;
+import reservation.client.*;
 
 import java.util.Scanner;
 
@@ -8,7 +8,7 @@ public class ReservationClient {
     public static void main(String[] args) {
         try (var client = ClusterClient.launch(ClusterClient.configuration()
                 .rootDirectory("./data"))) {
-            var proxy = new ReservationClusterProxy(client);
+            var proxy = new ReservationClusterProxy(client, new LoggingResponseConsumer());
             client.subscribe(proxy);
             var scanner = new Scanner(System.in);
             while (true) {
@@ -27,7 +27,6 @@ public class ReservationClient {
                 }
 
             }
-
         }
     }
 

@@ -3,4 +3,5 @@ mainClassName = 'ReservationCluster'
 dependencies {
     implementation project(':reservation:common')
     implementation project(':reservation:cluster:cluster-api')
+
 }
