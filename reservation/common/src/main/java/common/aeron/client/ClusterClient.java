@@ -1,5 +1,6 @@
 package common.aeron.client;
 
+import common.aeron.io.*;
 import io.aeron.cluster.client.*;
 import io.aeron.cluster.codecs.EventCode;
 import io.aeron.driver.MediaDriver;
@@ -28,6 +29,7 @@ public class ClusterClient implements AutoCloseable {
     private void start() {
         driver = MediaDriver.launch(contexts.driverCtx);
         cluster = AeronCluster.connect(contexts.clientCtx.egressListener(new InnerEgressListener()));
+        transmission = new AeronClusterTransmissionMedium(cluster);
         var agent = new ClusterClientAgent();
         agentRunner = new AgentRunner(new SleepingMillisIdleStrategy(10), err -> LOGGER.error("Error in cluster client", err), null, agent);
         AgentRunner.startOnThread(agentRunner);
@@ -38,8 +40,8 @@ public class ClusterClient implements AutoCloseable {
         this.subscription = subscription;
     }
 
-    public long offer(DirectBuffer buffer, int offset, int length) {
-        return cluster.offer(buffer, offset, length);
+    public TransmissionStatus offer(DirectBuffer buffer, int offset, int length) {
+        return transmission.offerRepeatedly(buffer, offset, length, 10, sendIdleStrategy);
     }
 
     public long nextCorrelationId() {
@@ -60,6 +62,8 @@ public class ClusterClient implements AutoCloseable {
     private AeronCluster cluster;
     private AgentRunner agentRunner;
     private ClusterMessageSubscription subscription;
+    private AeronClusterTransmissionMedium transmission;
+    private SleepingMillisIdleStrategy sendIdleStrategy = new SleepingMillisIdleStrategy(10);
 
     public static class Configuration {
 
