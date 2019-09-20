@@ -5,7 +5,9 @@ import java.util.*;
 public class ReservationOption {
 
     public static ReservationOption create(int seatsCount) {
+        INSTANCE.seats.forEach(Seat.POOL::release);
         INSTANCE.seats.clear();
+
         INSTANCE.expectedSeats = seatsCount;
         return INSTANCE;
     }

@@ -52,9 +52,20 @@ public class MessageMarshaller implements EncoderFlyweight {
         return correlationId;
     }
 
+    public long makeReservation(int trainId, int seatsCount) {
+        var correlationId = this.correlationId.getAsLong();
+        reservationRequestEncoder.wrapAndApplyHeader(buffer, 0, headerEncoder)
+                .correlationId(correlationId)
+                .trainId(trainId)
+                .seatsNumber(seatsCount);
+        messageLength = reservationRequestEncoder.encodedLength();
+        return correlationId;
+    }
+
     private final LongSupplier correlationId;
     private ExpandableDirectByteBuffer buffer = new ExpandableDirectByteBuffer(128);
     private MessageHeaderEncoder headerEncoder = new MessageHeaderEncoder();
     private CreateTrainEncoder createTrainEncoder = new CreateTrainEncoder();
+    private ReservationRequestEncoder reservationRequestEncoder = new ReservationRequestEncoder();
     private int messageLength;
 }

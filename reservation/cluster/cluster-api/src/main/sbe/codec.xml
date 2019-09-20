@@ -43,4 +43,19 @@
         <field id="1" name="correlationId" type="CorrelationId"/>
         <field id="2" name="trainId" type="TrainId"/>
     </sbe:message>
+
+    <sbe:message id="3" name="ReservationRequest">
+        <field id="1" name="correlationId" type="CorrelationId"/>
+        <field id="2" name="trainId" type="TrainId"/>
+        <field id="3" name="seatsNumber" type="uint16"/>
+    </sbe:message>
+
+    <sbe:message id="4" name="ReservationRequestResponse">
+        <field id="1" name="correlationId" type="CorrelationId"/>
+        <field id="2" name="trainId" type="TrainId"/>
+        <group id="3" name="seats">
+            <field id="31" name="coach" type="CoachId"/>
+            <field id="32" name="number" type="uint16"/>
+        </group>
+    </sbe:message>
 </sbe:messageSchema>

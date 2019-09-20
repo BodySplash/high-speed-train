@@ -16,6 +16,9 @@ public class TicketOffice {
 
     public ReservationOption requestReservation(int trainId, int seatsCount) {
         var train = repository.get(trainId);
+        if(train == null) {
+            return ReservationOption.create(seatsCount);
+        }
         return train.findReservation(seatsCount);
     }
 

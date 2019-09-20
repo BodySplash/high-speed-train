@@ -23,7 +23,7 @@ public class Seat {
         return number;
     }
 
-    private static Pool<Seat> POOL = new Pool<>(100000, Seat::new, false);
+    static Pool<Seat> POOL = new Pool<>(100000, Seat::new, false);
     private char coach;
     private int number;
 }

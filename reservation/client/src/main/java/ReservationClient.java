@@ -21,6 +21,11 @@ public class ReservationClient {
                     var params = command.split(" ");
                     proxy.createTrain(Integer.parseInt(params[1]), Integer.parseInt(params[2]));
                 }
+                if(command.startsWith("b")) {
+                    var params = command.split(" ");
+                    proxy.makeReservation(Integer.parseInt(params[1]), Integer.parseInt(params[2]));
+                }
+
             }
 
         }
